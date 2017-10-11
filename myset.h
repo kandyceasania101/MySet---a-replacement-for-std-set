@@ -45,14 +45,14 @@ private:
   };
 
 private:
-  T *Begin;
+  T *Arr;
   int Size;
   int Capacity;
 
 public:
   //myset constructor MAKE DYNAMIC
   myset()
-      : Begin(new T[4]),
+      : Arr(new T[4]),
         Size(0),
         Capacity(4)
   {
@@ -62,16 +62,16 @@ public:
 
   //copy constructor MAKE DYNAMIC
   myset(const myset &other)
-      : Begin(new T(Capacity)), Size(other.Size)
+      : Arr(new T(Capacity)), Size(other.Size)
   {
     for (int i = 0; i < other.Size; i++)
     {
-      Begin[i] = other.Begin[i];
+      Arr[i] = other.Arr[i];
     }
   }
 
   // Destructor: destroy all elements in set.
-  ~myset() { delete[] Begin; } //DONE
+  ~myset() { delete[] Arr; } //DONE
 
   int size() const { return Size; } //DONE
 
@@ -90,19 +90,13 @@ public:
   {
     for (int i = 0; i < size(); i++)
     {
-      Begin[i] = NULL;
+      Arr[i] = NULL;
     }
     Size = 0;
   }
 
   //
   // insert(e)
-  //
-  // Inserts the element e into the set.  Returns true if e
-  // was inserted, false if e was already in the set (and thus
-  // not inserted again).  Elements are inserted in element
-  // order as defined by the < operator; this enables in order
-  // iteration.
   //
   // Requirements:
   //   1. Insert time must be <= O(N).
@@ -122,24 +116,24 @@ public:
 
       for (i = 0; i < size(); i++)
       {
-        Temp[i] = Begin[i];
+        Temp[i] = Arr[i];
       }
-      Begin = Temp;
+      Arr = Temp;
     }
 
     for (i = 0; i < size(); i++)
     {
-      if (Begin[i] == e)
+      if (Arr[i] == e)
       {
         return false;
       }
     }
 
-    for (i = size() - 1; i >= 0 && Begin[i] > e; i--)
+    for (i = size() - 1; i >= 0 && Arr[i] > e; i--)
     {
-      Begin[i + 1] = Begin[i];
+      Arr[i + 1] = Arr[i];
     }
-    Begin[i + 1] = e;
+    Arr[i + 1] = e;
 
     Size++;
 
@@ -177,9 +171,9 @@ public:
     int mid = (high + low) / 2;
     if(high < low){ return end(); }
 
-    if ( !(e < Begin[mid]) && !(Begin[mid] < e)) { return iterator(Begin + mid);}
-    else if ( Begin[mid] < e ) { return binarySearch( high, mid+1, e ); }
-    else if ( e < Begin[mid] ) { return binarySearch( mid-1, low, e ); }
+    if ( !(e < Arr[mid]) && !(Arr[mid] < e)) { return iterator(Arr + mid);}
+    else if ( Arr[mid] < e ) { return binarySearch( high, mid+1, e ); }
+    else if ( e < Arr[mid] ) { return binarySearch( mid-1, low, e ); }
   }
 
   //
@@ -207,11 +201,11 @@ public:
     this->Size = rhs.Size;
     for (int i = 0; i < rhs.Size; i++)
     {
-      this->Begin[i] = rhs.Begin[i];
+      this->Arr[i] = rhs.Arr[i];
     }
     return *this;
   }
 
-  iterator begin() { return iterator(Begin); }      //DONE
-  iterator end() { return iterator(Begin + Size); } //DONE
+  iterator begin() { return iterator(Arr); }      //DONE
+  iterator end() { return iterator(Arr + Size); } //DONE
 };
